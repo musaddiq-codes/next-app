@@ -18,6 +18,7 @@ export async function POST(request: NextRequest) {
         if (!user) {
             return NextResponse.json({ error: "User does not exist" }, { status: 400 })
         }
+
         console.log("user exists");
 
 
@@ -26,6 +27,7 @@ export async function POST(request: NextRequest) {
         if (!validPassword) {
             return NextResponse.json({ error: "Invalid password" }, { status: 400 })
         }
+
         console.log(user);
 
         //create token data
@@ -34,6 +36,7 @@ export async function POST(request: NextRequest) {
             username: user.username,
             email: user.email
         }
+        
         //create token
         const token = await jwt.sign(tokenData, process.env.TOKEN_SECRET!, { expiresIn: "1d" })
 
@@ -41,10 +44,11 @@ export async function POST(request: NextRequest) {
             message: "Login successful",
             success: true,
         })
+        
         response.cookies.set("token", token, {
             httpOnly: true,
-
         })
+        
         return response;
 
     } catch (error: any) {
